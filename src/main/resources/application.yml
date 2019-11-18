@@ -1,0 +1,11 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /cuddly-journey/v1
+info:
+  app:
+    name: Cuddly Journey Application
+    version: 1.0.0.SNAPSHOT2
+  java:
+    vendor: ${java.specification.vendor}
+    version: ${java.specification.version}
