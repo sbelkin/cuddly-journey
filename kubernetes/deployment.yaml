@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cuddly-journey
+spec:
+  selector:
+    matchLabels:
+      app: cuddly-journey
+  replicas: 2 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: cuddly-journey
+    spec:
+      containers:
+        - name: cuddly-journey
+          image: cuddly-journey:lastest # Need to publish container
+          ports:
+            - containerPort: 80
