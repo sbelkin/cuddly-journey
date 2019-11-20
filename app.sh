@@ -5,6 +5,9 @@
 
 COMMAND=$1
 
+# Exit immediately if a command exits with non-zero status
+set -e
+
 function help_show() {
   echo "Usage: `app.sh $0` h"
   echo
@@ -19,21 +22,29 @@ function help_show() {
   exit 1;
 }
 
-if [[ -z ${COMMAND} || ${COMMAND}= "-h" || ${COMMAND} == "--help" ]]; then
+
+if [[ -z $COMMAND ]]; then
   help_show
-elif [[ ${COMMAND}= "-b" || ${COMMAND} == "--build" ]]; then
+fi
+
+# Shifts the current positional parameters left 1 ( if we want to use parameter inputs post command input)
+shift 1
+
+if [[ $COMMAND == "-h" || $COMMAND == "--help" ]]; then
+  help_show
+elif [[ $COMMAND == "-b" || $COMMAND == "--build" ]]; then
   ./mvnw clean package
-elif [[ ${COMMAND}= "-t" || ${COMMAND} == "--test" ]]; then
+elif [[ $COMMAND == "-t" || $COMMAND == "--test" ]]; then
   ./mvnw test
-elif [[ ${COMMAND}= "-r" || ${COMMAND} == "--run" ]]; then
+elif [[ $COMMAND == "-r" || $COMMAND == "--run" ]]; then
   java -jar target/cuddly-journey-1.0.0.SNAPSHOT.jar
-elif [[ ${COMMAND}= "-dkb" || ${COMMAND} == "--docker-build" ]]; then
+elif [[ $COMMAND == "-dkb" || $COMMAND == "--docker-build" ]]; then
   docker build -t cuddly-journey:lastest .
-elif [[ ${COMMAND}= "-dkr" || ${COMMAND} == "--docker-run" ]]; then
+elif [[ $COMMAND == "-dkr" || $COMMAND == "--docker-run" ]]; then
   docker run -p 8080:8080 cuddly-journey:latest
-elif [[ ${COMMAND}= "--dkc" || ${COMMAND} == "--docker-complete" ]]; then
+elif [[ $COMMAND == "--dkc" || $COMMAND == "--docker-complete" ]]; then
   ./app.sh -dkb
   ./app.sh -dkr
 else
-  echo "Unknown input: ${COMMAND},  check: --help for usage"
+  echo "Unknown input: $COMMAND,  check: --help for usage"
 fi
